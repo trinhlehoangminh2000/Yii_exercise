@@ -30,9 +30,12 @@ class m191224_072209_create_db extends Migration
     public function up()
     {
         $this->createTable('article', [
-            'id'=> $this -> primaryKey(),
+            'id_article'=> $this -> primaryKey(),
             'title' => $this-> string(50) ->notNull() ,
             'content' => $this->text(),
+            'created_at'=> $this -> dateTime(null),
+            'updated_at'=> $this ->dateTime(null),
+            'created_by'=> $this ->string(50)
         ]);
     }
 
