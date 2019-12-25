@@ -117,12 +117,6 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
-    /**
-     * Displays Article page.
-     *
-     * @return Response|string
-     */
     public function actionArticle()
     {
         //process the fetched data into list and send it to view
@@ -133,16 +127,6 @@ class SiteController extends Controller
             ],
         ]);
         return $this->render('article',['dataProvider'=>$dataProvider]);
-    }
-
-    public function actionArticleDetail($id)
-    {
-        $article = ArticleList::find()
-            ->where(['id'=> $id])
-            ->one();
-        return $this->render('articleDetail',[
-            'data' => $article, 
-        ]);
     }
 
     /**
