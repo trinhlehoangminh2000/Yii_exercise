@@ -69,6 +69,14 @@ class ArticleList extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+    public function hello()
+    {
+        $row = (new \yii\db\Query())
+            ->from('article')
+            ->where(['id_article' => 2])
+            ->one();
+        return $row;
+    }
 
     /**
      * @return \yii\db\ActiveQuery
