@@ -54,6 +54,12 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'as access' => [
+                'class' => 'mdm\admin\classes\AccessControl',
+                'allowActions' => [
+                    '/site/index',
+                ]
+            ]
         ];
     }
 
@@ -78,7 +84,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
+        $model = new \app\models\LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }

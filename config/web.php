@@ -8,6 +8,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
+        '@mdm/admin' => '@vendor/mdmsoft/yii2-admin',
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
@@ -20,7 +21,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\NewUser',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -50,7 +51,22 @@ $config = [
             'rules' => [
             ],
         ],
+//        'authManager' => [
+//            'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
+//        ],
         
+    ],
+//    'as access' => [
+//        'class' => 'mdm\admin\classes\AccessControl',
+//        'allowActions' => [
+//            'admin/*', // add or remove allowed actions to this list
+//            '/site/index',
+//        ]
+//    ],
+    'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+        ]
     ],
     'params' => $params,
 ];

@@ -8,6 +8,7 @@ use app\models\ArticleListSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\ArticleCreateForm;
 
 /**
  * ArticleController implements the CRUD actions for ArticleList model.
@@ -26,6 +27,7 @@ class ArticleController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+
         ];
     }
 
@@ -35,6 +37,10 @@ class ArticleController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            echo '<script>alert("No access")</script>';
+            return $this ->render('//site/index');
+        }
         $searchModel = new ArticleListSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -52,6 +58,10 @@ class ArticleController extends Controller
      */
     public function actionView($id)
     {
+        if (Yii::$app->user->isGuest) {
+            echo '<script>alert("No access")</script>';
+            return $this ->render('//site/index');
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -64,12 +74,14 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
-        $model = new ArticleList();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_article]);
+        if (Yii::$app->user->isGuest) {
+            echo '<script>alert("No access")</script>';
+            return $this ->render('//site/index');
         }
-
+        $model = new ArticleCreateForm();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' =>$model->getId()]);
+        }
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -84,6 +96,10 @@ class ArticleController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (Yii::$app->user->isGuest) {
+            echo '<script>alert("No access")</script>';
+            return $this ->render('//site/index');
+        }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -94,6 +110,7 @@ class ArticleController extends Controller
             'model' => $model,
         ]);
     }
+
     public function actionArticleDetail($id)
     {   
         $article = ArticleList::find()
@@ -113,6 +130,10 @@ class ArticleController extends Controller
      */
     public function actionDelete($id)
     {
+        if (Yii::$app->user->isGuest) {
+            echo '<script>alert("No access")</script>';
+            return $this ->render('//site/index');
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

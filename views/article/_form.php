@@ -2,10 +2,14 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+use app\models\ArticleCreateForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\ArticleList */
-/* @var $form yii\widgets\ActiveForm */
+$categoriesForm =[];
+$categories = ArticleCreateForm::getAllCategories();
+foreach ($categories as $category){
+    $categoriesForm += [$category['id_category']=>$category['name']];
+}
 ?>
 
 <div class="article-list-form">
@@ -26,6 +30,16 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'updated_by')->textInput() ?>
 
     <?= $form->field($model, 'status')->textInput() ?>
+
+    <?= $form->field($model, 'categories')->widget(Select2::classname(), [
+        'data' => $categories,
+        'options' => ['placeholder' => 'Select a category'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ])
+    ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

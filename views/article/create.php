@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ArticleList */
@@ -8,6 +9,7 @@ use yii\helpers\Html;
 $this->title = 'Create Article List';
 $this->params['breadcrumbs'][] = ['label' => 'Article Lists', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="article-list-create">
 
