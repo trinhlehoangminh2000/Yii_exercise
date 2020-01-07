@@ -19,8 +19,8 @@ class m200107_072410_create_tbl_address extends Migration
             'city' => $this-> string(30),
             'zip' => $this ->string(10),
             'country' => $this ->string(20),
-            'created_at'=> $this -> dateTime(null),
-            'updated_at'=> $this ->dateTime(null),
+            'created_at'=> $this -> integer(11),
+            'updated_at'=> $this ->integer(11),
         ]);
     }
 
@@ -29,7 +29,7 @@ class m200107_072410_create_tbl_address extends Migration
      */
     public function safeDown()
     {
-        $this -> dropTable('article');
+        $this -> dropTable('address');
     }
 
 

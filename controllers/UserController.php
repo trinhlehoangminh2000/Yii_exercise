@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\UserCreateForm;
 use app\models\UserSearch;
+use app\models\Address;
+use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -62,16 +64,53 @@ class UserController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+//    public function actionCreate()
+//    {
+//        $model = new UserCreateForm();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id_user]);
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
+
     public function actionCreate()
     {
-        $model = new UserCreateForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_user]);
+        $modelUser = new UserCreateForm();
+        $modelsAddress = [new Address];
+        if ($modelUser->load(Yii::$app->request->post())) {
+            $modelsAddress = Model::createMultiple(Address::classname());
+            Model::loadMultiple($modelsAddress, Yii::$app->request->post());
+            // validate all models
+            $valid = $modelUser->validate();
+            $valid = Model::validateMultiple($modelsAddress) && $valid;
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $modelUser->save(false)) {
+                        foreach ($modelsAddress as $modelAddress) {
+                            $modelAddress->user_id = $modelUser->id_user;
+                            if (! ($flag = $modelAddress->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $modelUser->id_user]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
         }
-
         return $this->render('create', [
-            'model' => $model,
+            'modelUser' => $modelUser,
+            'modelsAddress' => (empty($modelsAddress)) ? [new Address] : $modelsAddress
         ]);
     }
 

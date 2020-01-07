@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "user".
@@ -38,11 +39,18 @@ class UserCreateForm extends \yii\db\ActiveRecord
         return [
             [['created_at', 'updated_at', 'privilege', 'status'], 'integer'],
             [['username'], 'string', 'max' => 100],
+            [['status'], 'default', 'value' => 1],
             [['password'], 'string', 'max' => 16],
             [['auth_key'], 'string', 'max' => 32],
         ];
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
     /**
      * {@inheritdoc}
      */
