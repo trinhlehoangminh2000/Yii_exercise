@@ -63,7 +63,7 @@ class ArticleController extends Controller
             echo '<script>alert("No access")</script>';
             return $this ->render('//site/index');
         }
-        $model = $this->findModel($id);
+        $model = $this->findModelWithCategoryName($id);
         return $this->render('view', [
             'model' => $model,
         ]);
@@ -102,7 +102,7 @@ class ArticleController extends Controller
             echo '<script>alert("No access")</script>';
             return $this ->render('//site/index');
         }
-        $model = $this->findModel($id);
+        $model = $this->findModelWithCategoryId($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_article]);
         }
@@ -148,4 +148,21 @@ class ArticleController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    protected function findModelWithCategoryId($id)
+    {
+        if (($model = ArticleCreateForm::findOne($id)) !== null) {
+            $model->categories = $model->getArticleCategoriesId();
+            return $model;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findModelWithCategoryName($id)
+    {
+        if (($model = ArticleCreateForm::findOne($id)) !== null) {
+            $model->categories = $model->getArticleCategoriesName();
+            return $model;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
 }

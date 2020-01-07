@@ -5,6 +5,9 @@ namespace app\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use app\models\ArticleCategory;
+use yii\db\Transaction;
+use yii\db\Query;
+
 
 /**
  * This is the model class for table "article".
@@ -63,17 +66,27 @@ class ArticleCreateForm extends ArticleList
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getArticleCategories()
+    public function getArticleCategoriesName()
     {
-        //return $this->hasMany(ArticleCategory::className(), ['article_id' => 'id_article']);
-        $row = new \yii\db\Query();
-        $row ->select(['category.name'])
+        //return $this->hasMany(ArticleCategory::className(), ['article_id' => 'id_article']);\
+        $row = $this->getArticleCategoriesId();
+        $name = (new \yii\db\Query())
+            ->select(['name'])
             ->from('category')
-            ->innerJoinWith('article_category','category.id_category = article_category.category_id')
-            ->innerJoinWith('article','article_category.article_id = article.id_article')
-            ->where(['id_article'=>$this->id_article])
-            ->one();
-        return $row;
+            ->where(['id_category' => $row])
+            ->all();
+        return $name[0]['name'];
+    }
+
+    public function getArticleCategoriesId()
+    {
+        //return $this->hasMany(ArticleCategory::className(), ['article_id' => 'id_article']);\
+        $row = (new \yii\db\Query())
+            ->select(['category_id'])
+            ->from('article_category')
+            ->where(['article_id' => $this->id_article])
+            ->all();
+        return  $row[0]['category_id'];
     }
 
     public function getId(){
@@ -98,9 +111,20 @@ class ArticleCreateForm extends ArticleList
         $saveResult1 = parent::save($runValidation, $attributeNames);
 
         //Saving the article categories
-        Yii::$app->db->createCommand()
-            ->delete('article_category', "article_id ='$this->id_article'")
-            ->execute();
+        $connection = \Yii::$app->db;
+        $transaction = $connection->beginTransaction();
+        try {
+            $connection->createCommand()
+                ->delete('article_category', "article_id ='$this->id_article'")
+                ->execute();
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
         $articleCategory = new ArticleCategory();
         $articleCategory->article_id = $this->id_article;
         $articleCategory->category_id = $this->categories;

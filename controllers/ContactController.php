@@ -14,6 +14,7 @@ class ContactController extends \yii\web\Controller
         $model = new Contact();
         //if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //if ($model->load(Yii::$app->request->post()) && $model->contact($model->email)) {
             Yii::$app->session->setFlash('contactFormSubmitted');
             return $this->refresh();
         }

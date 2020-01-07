@@ -19,6 +19,7 @@ use yii\behaviors\TimestampBehavior;
 class Contact extends \yii\db\ActiveRecord
 {
     public $verifyCode;
+    public $updated_at;
     /**
      * {@inheritdoc}
      */
@@ -71,10 +72,11 @@ class Contact extends \yii\db\ActiveRecord
         if ($this->validate()) {
             Yii::$app->mailer->compose()
                 ->setTo($email)
-                ->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
+                ->setFrom('trinhm800@gmail.com')
+                //->setFrom([Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']])
                 ->setReplyTo([$this->email => $this->name])
                 ->setSubject($this->subject)
-                ->setTextBody($this->body)
+                ->setTextBody($this->message)
                 ->send();
 
             return true;
