@@ -63,7 +63,7 @@ class ArticleListSearch extends ArticleList
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
-            'status' => $this->status,
+            'status' => '1' OR 'NULL',
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

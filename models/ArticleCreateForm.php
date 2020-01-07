@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use app\models\ArticleCategory;
 
 /**
  * This is the model class for table "article".
@@ -64,7 +65,15 @@ class ArticleCreateForm extends ArticleList
      */
     public function getArticleCategories()
     {
-        return $this->hasMany(ArticleCategory::className(), ['article_id' => 'id_article']);
+        //return $this->hasMany(ArticleCategory::className(), ['article_id' => 'id_article']);
+        $row = new \yii\db\Query();
+        $row ->select(['category.name'])
+            ->from('category')
+            ->innerJoinWith('article_category','category.id_category = article_category.category_id')
+            ->innerJoinWith('article','article_category.article_id = article.id_article')
+            ->where(['id_article'=>$this->id_article])
+            ->one();
+        return $row;
     }
 
     public function getId(){
@@ -77,18 +86,26 @@ class ArticleCreateForm extends ArticleList
     }
 
     public function save($runValidation = true, $attributeNames = NULL){
-        $saveResult = parent::save($runValidation, $attributeNames);
-        $articleCategoryResult;
-        try {
-            Yii::$app->db->createCommand()
-                ->insert('article_category', [
-                    'article_id' => $this->id_article,
-                    'category_id' => $this->categories
-                ])->execute();
-            $articleCategoryResult = TRUE;
-        } catch (Exception $e){
-            $articleCategoryResult = FALSE;
+        //Saving the Article details
+        $user = NewUser::find()
+            ->where(['username'=> Yii::$app->user->identity->username])
+            ->one();
+        if($this->isNewRecord){
+            $this->created_by = $user->id_user;
+        } else {
+            $this ->updated_by = $user->id_user;
         }
-        return $saveResult && $articleCategoryResult;
+        $saveResult1 = parent::save($runValidation, $attributeNames);
+
+        //Saving the article categories
+        Yii::$app->db->createCommand()
+            ->delete('article_category', "article_id ='$this->id_article'")
+            ->execute();
+        $articleCategory = new ArticleCategory();
+        $articleCategory->article_id = $this->id_article;
+        $articleCategory->category_id = $this->categories;
+        $saveResult2 = $articleCategory->save();
+
+        return $saveResult1 && $saveResult2;
     }
 }

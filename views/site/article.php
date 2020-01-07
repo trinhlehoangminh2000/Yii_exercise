@@ -24,7 +24,7 @@ $this->title = 'Article list';
         'dataProvider' => $dataProvider,
         'itemView'=> function($model)
         {
-            return '<a href="/article/article-detail?id='.$model->id.'">'.$model->title.'</a>';
+            return '<a href="/article/article-detail?id='.$model->id_article.'">'.$model->title.'</a>';
         }
     ]);
 ?>

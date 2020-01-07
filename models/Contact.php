@@ -3,33 +3,46 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Model;
+use yii\behaviors\TimestampBehavior;
 
 /**
- * ContactForm is the model behind the contact form.
+ * This is the model class for table "contact".
+ *
+ * @property int $id_contact
+ * @property string|null $name
+ * @property string|null $email
+ * @property string|null $subject
+ * @property string|null $sub_category_subject
+ * @property int|null $created_at
+ * @property string|null $message
  */
-class ContactForm extends Model
+class Contact extends \yii\db\ActiveRecord
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $subSubject;
-    public $body;
     public $verifyCode;
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
-        return 'article_category';
+        return 'contact';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
+    }
     /**
-     * @return array the validation rules.
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body','subSubject'], 'required'],
+            [['name', 'email', 'subject', 'sub_category_subject','message'], 'required'],
+            [['created_at'], 'integer'],
+            [['message'], 'string'],
+            [['name', 'email', 'subject', 'sub_category_subject'], 'string', 'max' => 50],
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
@@ -38,20 +51,21 @@ class ContactForm extends Model
     }
 
     /**
-     * @return array customized attribute labels
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
+            'id_contact' => 'Id Contact',
+            'name' => 'Full Name',
+            'email' => 'Email',
+            'subject' => 'Subject',
+            'sub_category_subject' => 'Subject details',
+            'created_at' => 'Created At',
+            'message' => 'Message',
             'verifyCode' => 'Verification Code',
         ];
     }
-
-    /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param string $email the target email address
-     * @return bool whether the model passes validation
-     */
     public function contact($email)
     {
         if ($this->validate()) {

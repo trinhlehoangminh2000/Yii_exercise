@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\ArticleCreateForm;
+use app\models\ArticleCategory;
 
 /**
  * ArticleController implements the CRUD actions for ArticleList model.
@@ -62,8 +63,9 @@ class ArticleController extends Controller
             echo '<script>alert("No access")</script>';
             return $this ->render('//site/index');
         }
+        $model = $this->findModel($id);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -80,7 +82,7 @@ class ArticleController extends Controller
         }
         $model = new ArticleCreateForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' =>$model->getId()]);
+            return $this->redirect(['view', 'id' =>$model->id_article]);
         }
         return $this->render('create', [
             'model' => $model,
@@ -101,7 +103,6 @@ class ArticleController extends Controller
             return $this ->render('//site/index');
         }
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_article]);
         }
@@ -111,16 +112,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    public function actionArticleDetail($id)
-    {   
-        $article = ArticleList::find()
-            ->where(['id'=> $id])
-            ->one();
-        
-        return $this->render('articleDetail',[
-            'data' => $article,
-        ]);
-    }
+
     /**
      * Deletes an existing ArticleList model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -134,7 +126,9 @@ class ArticleController extends Controller
             echo '<script>alert("No access")</script>';
             return $this ->render('//site/index');
         }
-        $this->findModel($id)->delete();
+         Yii::$app->db->createCommand()
+            ->update('article', ['status'=> 0], "id_article='$id'")->execute();
+
 
         return $this->redirect(['index']);
     }
@@ -148,7 +142,7 @@ class ArticleController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = ArticleList::findOne($id)) !== null) {
+        if (($model = ArticleCreateForm::findOne($id)) !== null) {
             return $model;
         }
 

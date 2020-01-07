@@ -40,6 +40,7 @@ class ArticleList extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['content'], 'string'],
             [['created_at', 'updated_at', 'created_by', 'updated_by', 'status'], 'integer'],
+            [['status'], 'default', 'value' => 1],
             [['title'], 'string', 'max' => 50],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id_user']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id_user']],
