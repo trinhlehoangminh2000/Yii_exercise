@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //'privilege',
             //'status',
             //'auth_key',
-            //'address_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

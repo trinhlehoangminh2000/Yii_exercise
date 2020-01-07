@@ -10,9 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserManagementController implements the CRUD actions for UserCreateForm model.
+ * UserController implements the CRUD actions for UserCreateForm model.
  */
-class UserManagementController extends Controller
+class UserController extends Controller
 {
     /**
      * {@inheritdoc}

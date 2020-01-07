@@ -17,7 +17,7 @@ class UserSearch extends UserCreateForm
     public function rules()
     {
         return [
-            [['id_user', 'created_at', 'updated_at', 'privilege', 'status', 'address_id'], 'integer'],
+            [['id_user', 'created_at', 'updated_at', 'privilege', 'status'], 'integer'],
             [['username', 'password', 'auth_key'], 'safe'],
         ];
     }
@@ -63,7 +63,6 @@ class UserSearch extends UserCreateForm
             'updated_at' => $this->updated_at,
             'privilege' => $this->privilege,
             'status' => $this->status,
-            'address_id' => $this->address_id,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])

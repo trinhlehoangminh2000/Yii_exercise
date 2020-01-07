@@ -15,11 +15,10 @@ use Yii;
  * @property int|null $privilege
  * @property int|null $status
  * @property string|null $auth_key
- * @property int|null $address_id
  *
+ * @property Address[] $addresses
  * @property Article[] $articles
  * @property Article[] $articles0
- * @property Address $address
  */
 class UserCreateForm extends \yii\db\ActiveRecord
 {
@@ -37,11 +36,10 @@ class UserCreateForm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at', 'privilege', 'status', 'address_id'], 'integer'],
+            [['created_at', 'updated_at', 'privilege', 'status'], 'integer'],
             [['username'], 'string', 'max' => 100],
             [['password'], 'string', 'max' => 16],
             [['auth_key'], 'string', 'max' => 32],
-            //[['address_id'], 'exist', 'skipOnError' => true, 'targetClass' => Address::className(), 'targetAttribute' => ['address_id' => 'id_address']],
         ];
     }
 
@@ -59,8 +57,15 @@ class UserCreateForm extends \yii\db\ActiveRecord
             'privilege' => 'Privilege',
             'status' => 'Status',
             'auth_key' => 'Auth Key',
-            'address_id' => 'Address ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAddresses()
+    {
+        return $this->hasMany(Address::className(), ['user_id' => 'id_user']);
     }
 
     /**
@@ -77,13 +82,5 @@ class UserCreateForm extends \yii\db\ActiveRecord
     public function getArticles0()
     {
         return $this->hasMany(Article::className(), ['updated_by' => 'id_user']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAddress()
-    {
-        return $this->hasOne(Address::className(), ['id_address' => 'address_id']);
     }
 }
