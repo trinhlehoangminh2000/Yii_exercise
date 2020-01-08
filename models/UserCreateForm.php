@@ -26,6 +26,8 @@ class UserCreateForm extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $addressString;
+
     public static function tableName()
     {
         return 'user';
@@ -65,6 +67,7 @@ class UserCreateForm extends \yii\db\ActiveRecord
             'privilege' => 'Privilege',
             'status' => 'Status',
             'auth_key' => 'Auth Key',
+            'addressString' =>'Addresses',
         ];
     }
 

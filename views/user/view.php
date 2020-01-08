@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+    <?= Yii::debug($model->addressString);?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
             'privilege',
             'status',
-            'auth_key',
+            'addressString',
         ],
     ]) ?>
 

@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
+use app\models\Countries;
+use kartik\select2\Select2;
+
+$list = Countries::getCountries();
 
 /* @var $this yii\web\View */
 /* @var $model app\models\UserCreateForm */
@@ -59,7 +63,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                         <?php
                         // necessary for update action.
                         if (!$modelAddress->isNewRecord) {
-                            echo Html::activeHiddenInput($modelAddress, "[{$index}]id");
+                            echo Html::activeHiddenInput($modelAddress, "[{$index}]id_address");
                         }
                         ?>
                         <div class="row">
