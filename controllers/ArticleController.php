@@ -38,10 +38,10 @@ class ArticleController extends Controller
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->isGuest) {
-            echo '<script>alert("No access")</script>';
-            return $this ->render('//site/index');
-        }
+        //if (Yii::$app->user->isGuest) {
+        //    echo '<script>alert("No access")</script>';
+         //   return $this ->render('//site/index');
+        //}
         $searchModel = new ArticleListSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -59,10 +59,7 @@ class ArticleController extends Controller
      */
     public function actionView($id)
     {
-        if (Yii::$app->user->isGuest) {
-            echo '<script>alert("No access")</script>';
-            return $this ->render('//site/index');
-        }
+
         $model = $this->findModelWithCategoryName($id);
         return $this->render('view', [
             'model' => $model,
@@ -76,10 +73,7 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
-        if (Yii::$app->user->isGuest) {
-            echo '<script>alert("No access")</script>';
-            return $this ->render('//site/index');
-        }
+
         $model = new ArticleCreateForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' =>$model->id_article]);
@@ -98,10 +92,7 @@ class ArticleController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->isGuest) {
-            echo '<script>alert("No access")</script>';
-            return $this ->render('//site/index');
-        }
+
         $model = $this->findModelWithCategoryId($id);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_article]);
@@ -122,10 +113,7 @@ class ArticleController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->isGuest) {
-            echo '<script>alert("No access")</script>';
-            return $this ->render('//site/index');
-        }
+
          Yii::$app->db->createCommand()
             ->update('article', ['status'=> 0], "id_article='$id'")->execute();
 

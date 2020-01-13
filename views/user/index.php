@@ -18,26 +18,43 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create User Create Form', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="container">
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <div class="container">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'id_user',
+                [
+                    'header'=>'Username',
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url,$model,$key) {
+                            return Html::a($model->username, $url);
+                        },
+                    ],
+                ],
 
-            'id_user',
-            'username',
-            'password',
-            'created_at',
-            'updated_at',
-            //'privilege',
-            //'status',
-            //'auth_key',
+                'password',
+                //'created_at',
+                //'updated_at',
+                //'privilege',
+                //'status',
+                //'auth_key',
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header'=>'Action',
+                    'template'=>'{view} {update} {link}'
+                ],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+            ],
+        ]); ?>
+    </div>
+
 
 
 </div>

@@ -38,7 +38,6 @@ class LoginForm extends \yii\base\Model
         if ($this->_user === false) {
             $this->_user = NewUser::findByUsername($this->username);
         }
-
         return $this->_user;
     }
 
@@ -54,7 +53,6 @@ class LoginForm extends \yii\base\Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }

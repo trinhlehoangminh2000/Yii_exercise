@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "user".
@@ -50,7 +51,12 @@ class UserCreateForm extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
     /**
@@ -94,4 +100,39 @@ class UserCreateForm extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Article::className(), ['updated_by' => 'id_user']);
     }
+
+
+    public function delete()
+    {
+        $transaction = static::getDb()->beginTransaction();
+        try {
+            $result = $this->changeStatus();
+            if ($result === false) {
+                $transaction->rollBack();
+            } else {
+                $transaction->commit();
+            }
+            return $result;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
+
+    public function changeStatus()
+    {
+        ($this->status == 1) ? $this->status = 0 : $this->status = 1;
+        return $this->save();
+    }
+
+    public function beforeSave($insert) {
+        $res = parent::beforeSave($insert);
+        $password = $this->password;
+        $this->password= Yii::$app->getSecurity()->generatePasswordHash($password);
+        return $res && true;
+    }
+
 }

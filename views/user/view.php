@@ -25,17 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    <?= Yii::debug($model->addressString);?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id_user',
             'username',
             'password',
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
             'privilege',
-            'status',
+            'status:boolean',
             'addressString',
         ],
     ]) ?>

@@ -3,8 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use wbraganca\dynamicform\DynamicFormWidget;
-use app\models\Countries;
 use kartik\select2\Select2;
+use app\models\Countries;
+
 
 $list = Countries::getCountries();
 
@@ -82,7 +83,14 @@ $list = Countries::getCountries();
                                 <?= $form->field($modelAddress, "[{$index}]zip")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-4">
-                                <?= $form->field($modelAddress, "[{$index}]country")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelAddress, "[{$index}]country")->widget(Select2::classname(), [
+                                    'data' => $list,
+                                    'options' => ['placeholder' => 'Select a category'],
+                                    'pluginOptions' => [
+                                        'allowClear' => true
+                                    ],
+                                ])
+                                ?>
                             </div>
                         </div><!-- end:row -->
                     </div>

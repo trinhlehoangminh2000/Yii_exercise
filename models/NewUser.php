@@ -30,8 +30,6 @@ class NewUser extends \yii\db\ActiveRecord implements IdentityInterface
             'password' => 'Password',
         ];
     }
-
-
     public static function findIdentity($id)
     {
         return self::find()->where(['id_user'=>$id])->one();
@@ -52,13 +50,21 @@ class NewUser extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return $this->getAuthKey() === $authKey;
     }
+
+
     public static function findByUsername($username)
     {
-        return self::findOne(['username' => $username]);
+        return self::findOne([
+            'username' => $username,
+            'status'=>1
+            ]
+        );
     }
-    public function validatePAssword($password){
-        return $this->password === $password;
+
+    public function validatePassword($passwordOnForm){
+        return Yii::$app->getSecurity()->validatePassword($passwordOnForm, $this->password);
     }
+
     public function getArticles()
     {
         return $this->hasMany(Article::className(), ['created_by' => 'id_user']);

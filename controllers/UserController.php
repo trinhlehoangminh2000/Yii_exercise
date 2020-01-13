@@ -39,6 +39,7 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
+        Countries::getCountries();
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

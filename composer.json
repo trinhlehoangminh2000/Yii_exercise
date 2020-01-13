@@ -18,7 +18,7 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
-        "mdmsoft/yii2-admin": "*",
+        "mdmsoft/yii2-admin": "~2.0",
         "kartik-v/yii2-widgets": "dev-master",
         "symfony/dom-crawler": "2.8",
         "symfony/css-selector": "2.8",

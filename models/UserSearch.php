@@ -40,7 +40,7 @@ class UserSearch extends UserCreateForm
      */
     public function search($params)
     {
-        $query = UserCreateForm::find();
+        $query = UserCreateForm::find()->where(['status'=>1]);
 
         // add conditions that should always apply here
 

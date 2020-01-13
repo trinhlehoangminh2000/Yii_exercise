@@ -13,6 +13,9 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+        'authManager'=>[
+            'class'=> 'yii\rbac\DbManager',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'pylJ1D2GZOV7VPpDdAK739l0p8StC0QD',
@@ -21,7 +24,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\NewUser',
+            //'identityClass' => 'app\models\NewUser',
+            'identityClass' => 'mdm\admin\models\User',
+            'loginUrl' => ['admin/user/login'],
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -60,22 +65,31 @@ $config = [
             'rules' => [
             ],
         ],
-//        'authManager' => [
-//            'class' => 'yii\rbac\PhpManager', // or use 'yii\rbac\DbManager'
-//        ],
-        
     ],
-//    'as access' => [
-//        'class' => 'mdm\admin\classes\AccessControl',
-//        'allowActions' => [
-//            'admin/*', // add or remove allowed actions to this list
-//            '/site/index',
-//        ]
-//    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'admin/*',
+            'site/*',
+            'article/*',
+            'user/*',
+            'contact/*',
+            'debug/*'
+        ]
+    ],
     'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
-        ]
+//            'controllerMap' => [
+//                'assignment' => [
+//                    'class' => 'mdm\admin\controllers\AssignmentController',
+//                    'userClassName' => 'app\models\NewUser',
+//                    'idField' => 'id_user',
+//                    'usernameField' => 'username',
+//                    'searchClass' => 'app\models\UserSearch'
+//                ],
+//            ],
+        ],
     ],
     'params' => $params,
 ];
