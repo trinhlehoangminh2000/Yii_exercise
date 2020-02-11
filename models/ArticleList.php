@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use \raoul2000\workflow\base\SimpleWorkflowBehavior;
 
 /**
  * This is the model class for table "article".
@@ -40,7 +41,7 @@ class ArticleList extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['content'], 'string'],
             [['created_at', 'updated_at', 'created_by', 'updated_by', 'status'], 'integer'],
-            [['status'], 'default', 'value' => 1],
+            [['status'], 'default', 'value' => 'draft'],
             [['title'], 'string', 'max' => 50],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['created_by' => 'id_user']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['updated_by' => 'id_user']],
@@ -52,6 +53,7 @@ class ArticleList extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
+            //SimpleWorkflowBehavior::className()
         ];
     }
     /**

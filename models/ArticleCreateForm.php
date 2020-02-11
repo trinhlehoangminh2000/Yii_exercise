@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use app\models\ArticleCategory;
 use yii\db\Transaction;
 use yii\db\Query;
+use \raoul2000\workflow\base\SimpleWorkflowBehavior;
 
 
 /**
@@ -37,6 +38,12 @@ class ArticleCreateForm extends ArticleList
         return $rows;
     }
 
+    public function behaviors()
+    {
+        $return = parent::behaviors();
+        array_push($return, SimpleWorkflowBehavior::className());
+        return $return;
+    }
     public static function tableName()
     {
         return 'article';
@@ -108,6 +115,7 @@ class ArticleCreateForm extends ArticleList
         } else {
             $this ->updated_by = $user->id_user;
         }
+
         $saveResult1 = parent::save($runValidation, $attributeNames);
 
         //Saving the article categories

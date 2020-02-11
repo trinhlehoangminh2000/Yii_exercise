@@ -22,7 +22,8 @@
         "kartik-v/yii2-widgets": "dev-master",
         "symfony/dom-crawler": "2.8",
         "symfony/css-selector": "2.8",
-        "wbraganca/yii2-dynamicform": "2.0.1"
+        "wbraganca/yii2-dynamicform": "2.0.1",
+        "raoul2000/yii2-workflow": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

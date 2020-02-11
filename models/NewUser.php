@@ -13,7 +13,7 @@ class NewUser extends \yii\db\ActiveRecord implements IdentityInterface
 
     public static function tableName()
     {
-        return 'user';
+        return 'user_original';
     }
     public function rules()
     {

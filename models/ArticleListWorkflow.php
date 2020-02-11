@@ -1,8 +1,7 @@
 <?php
 
-
 namespace app\models;
-class ArticleCreateFormWorkflow implements \raoul2000\workflow\source\file\IWorkflowDefinitionProvider
+class ArticleListWorkflow implements \raoul2000\workflow\source\file\IWorkflowDefinitionProvider
 {
     public function getDefinition()
     {
